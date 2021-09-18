@@ -3,6 +3,12 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const dotenv = require('dotenv');
+
+const { dbConnection } = require('./database/config');
+// const { securedUser, secureAdmin } = require('./middlewares/auth');
+dotenv.config();
+dbConnection();
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
