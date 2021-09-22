@@ -1,5 +1,6 @@
+const uuid = require('uuid');
 const Order = require('../models/Order');
-const uuid = require('node-uuid');
+const { newOrder, approveOrderProducts } = require('../services/orderService');
 
 const getAllOrders = async (_, res) => {
   try {
@@ -15,10 +16,11 @@ const createOrder = (req, res) => {
   console.log(req.body);
   const { clientId, items } = req.body;
   const newOrder = new Order({
-    uuid = new uuid(),
+    uuid: uuid(),
     clientId,
     items,
   });
+  approveOrderProducts(items);
   try {
     newOrder.save((error) => {
       if (error) {
