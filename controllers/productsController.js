@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const { productValidationSchema } = require('../helpers/validationSchema');
 
 const getAllProducts = async (_, res) => {
   try {
@@ -10,7 +11,6 @@ const getAllProducts = async (_, res) => {
 };
 
 const createProduct = (req, res) => {
-  console.log(req.body);
   const { category, trademark, name, price, stock, status } = req.body;
   const newProduct = new Product({
     category,

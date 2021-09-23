@@ -30,6 +30,10 @@ const ProductSchema = Schema({
     type: Boolean,
     default: true,
   },
+  // updated_by: {
+  //   type: String,
+  //   required: true,
+  // },
   ts_create: {
     type: Date,
     default: Date.now,
