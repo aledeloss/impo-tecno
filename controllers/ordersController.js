@@ -1,5 +1,6 @@
 const Order = require('../models/Order');
 const uuid = require('node-uuid');
+const { approveOrderProducts } = require('../services/orderService');
 
 const getAllOrders = async (_, res) => {
   try {
@@ -14,22 +15,31 @@ const createOrder = (req, res) => {
   console.log('probando');
   console.log(req.body);
   const { clientId, items } = req.body;
+  // chequear en la base que haya stock y el precio sea correcto
+  // si es correcto aprueba y agrega item a la orden
+  // si hay error en al menos 1 item, desaprueba
+  // actualizar stock
+  // generar orden
   const newOrder = new Order({
-    uuid = new uuid(),
+    uuid: uuid(),
     clientId,
     items,
   });
-  try {
-    newOrder.save((error) => {
-      if (error) {
-        res.status(400).json({ error });
-      }
-      res.status(201).json({ message: 'Orden enviada' });
-    });
-  } catch (err) {
-    console.error('HUBO UN ERROR', err);
-    res.status(404).send('La información ingresada no es válida');
-  }
+  // if(approveOrderProducts) {
+  console.log('approvedOrders', approveOrderProducts(items));
+  res.end();
+  // try {
+  //   newOrder.save((error) => {
+  //     if (error) {
+  //       res.status(400).json({ error });
+  //     }
+  //     res.status(201).json({ message: 'Orden enviada' });
+  //   });
+  // } catch (err) {
+  //   console.error('HUBO UN ERROR', err);
+  //   res.status(404).send('La información ingresada no es válida');
+  // }
+  // }
 };
 
 const getSingleOrder = async (req, res) => {
