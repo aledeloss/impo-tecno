@@ -1,6 +1,7 @@
 const uuid = require('uuid');
 const Order = require('../models/Order');
-const { newOrder, approveOrderProducts } = require('../services/orderService');
+const uuid = require('node-uuid');
+const { approveOrderProducts } = require('../services/orderService');
 
 const getAllOrders = async (_, res) => {
   try {
@@ -15,6 +16,11 @@ const createOrder = (req, res) => {
   console.log('probando');
   console.log(req.body);
   const { clientId, items } = req.body;
+  // chequear en la base que haya stock y el precio sea correcto
+  // si es correcto aprueba y agrega item a la orden
+  // si hay error en al menos 1 item, desaprueba
+  // actualizar stock
+  // generar orden
   const newOrder = new Order({
     uuid: uuid(),
     clientId,

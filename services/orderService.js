@@ -15,16 +15,26 @@ const newOrder = async (req) => {
 };
 
 const approveOrderProducts = async (products) => {
-  const productsArray = products.map(({ id, price, quantity }) => {
-    const product = Product.find({
+  const productsArray = products.map(async ({ id, price, quantity }) => {
+    const getProduct = Product.find({
       _id: id,
+      price: price,
       stock: { $gte: quantity },
       enable: true,
     });
   });
-  console.log(product);
-  res.json({ result: product });
+  const [approvePurchaseResult] = await Promise.all(productsArray); // []
+  if (approvePurchaseResult.length) return true; // [[]]
+  return false;
 };
+// const approvedOrder = Promise.all(productsArray);
+// approvedOrder.then(console.log('ahora sì', approvedOrder));
+// return approvedOrder;
+// if ((await approvedOrder).length === products.length) return true;
+// return false;
+// console.log(product);
+// res.json({ result: product });
+// };
 
 //   const [approvePurchaseResult] = await Promise.all(productsArray); // []
 //   if (approvePurchaseResult.length) console.log('orden ok'); // [[]]
