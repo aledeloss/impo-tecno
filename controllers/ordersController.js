@@ -22,7 +22,7 @@ const createOrder = async (req, res) => {
   await Promise.all(
     items.map(async (item) => {
       // valida que haya stock y el precio sea correcto
-      await Product.findById(item.id, function (err, data) {
+      await Product.findById(item.id, (err, data) => {
         if (data.stock >= item.quantity && data.price === item.price) {
           console.log('ok');
         } else {
@@ -38,7 +38,7 @@ const createOrder = async (req, res) => {
       // actualiza stock
       Promise.all(
         items.map(async (item) => {
-          Product.findById(item.id, function (err, data) {
+          Product.findById(item.id, (err, data) => {
             if (err) console.error(err);
             else {
               Product.findByIdAndUpdate(
@@ -47,7 +47,7 @@ const createOrder = async (req, res) => {
                   stock: data.stock - item.quantity,
                   //status: newStock === 0 ? 'Sin stock' : 'En stock', // arreglar esto
                 },
-                function (err, data) {
+                (err, data) => {
                   console.log('updated');
                 }
               );
@@ -57,18 +57,13 @@ const createOrder = async (req, res) => {
       )
     )
     .then(
-      //crea la orden
-      // try {
+      // crea la orden
       newOrder.save((error) => {
         if (error) {
           res.status(400).json({ message: error.message });
         }
-        res.status(201).json({ message: 'Orden creada' });
+        res.status(201).json({ message: 'Orden creada', newOrder });
       })
-      // } catch (err) {
-      //   console.error('HUBO UN ERROR', err);
-      //   res.status(404).send('La información ingresada no es válida');
-      // }
     )
     .then(res.status(200));
 };

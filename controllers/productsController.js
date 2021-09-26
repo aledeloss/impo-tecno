@@ -72,4 +72,8 @@ const editProduct = async (req, res) => {
   });
 };
 
+const updateStatus = async(id) => {
+    
+}
+
 module.exports = { getAllProducts, createProduct, singleProduct, editProduct };
