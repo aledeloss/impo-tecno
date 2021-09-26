@@ -1,7 +1,22 @@
 const Joi = require('@hapi/joi');
 
 const productValidationSchema = Joi.object({
-  category: Joi.string().valid('').required(), // uno de los campos
+  category: Joi.string()
+    .valid(
+      'Motherboard',
+      'Refrigeración',
+      'Microprocesadores',
+      'Fuentes de alimentación',
+      'Adaptadores',
+      'Cables',
+      'Memoria RAM',
+      'Monitores',
+      'Placas de video',
+      'Discos de almacenamiento',
+      'Accesorios',
+      'Estructuras'
+    )
+    .required(),
   trademark: Joi.string().required(), //
   name: Joi.string().required(),
   price: Joi.number().required(), // dos decimales y positivo

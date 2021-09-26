@@ -2,10 +2,10 @@ const { Schema, model } = require('mongoose');
 
 // revisar campos
 const OrderSchema = Schema({
-  uuid: {
-    type: String,
-    required: true,
-  },
+  // uuid: {
+  //   type: String,
+  //   required: true,
+  // },
   client_id: {
     type: String,
     required: true,
@@ -21,6 +21,10 @@ const OrderSchema = Schema({
   date: {
     type: Date,
     default: Date.now,
+  },
+  status: {
+    type: String,
+    default: 'open',
   },
   enabled: {
     type: Boolean,

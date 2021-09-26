@@ -14,18 +14,23 @@ const newOrder = async (req) => {
   });
 };
 
-const approveOrderProducts = async (products) => {
-  const productsArray = products.map(async ({ id, price, quantity }) => {
-    const getProduct = Product.find({
-      _id: id,
-      price: price,
-      stock: { $gte: quantity },
-      enable: true,
-    });
+const approveOrderProducts = async (items) => {
+  await Promise.all(
+    items.map(async (item) => {
+      await Product.findById(item.id, function (err, data) {
+        if (data.stock >= item.quantity && data.price === item.price) {
+          console.log('ok');
+          // approvedProduct.push(true);
+        } else {
+          res
+            .status(400)
+            .json({ message: 'Datos ingresados incorrectos', product: item });
+        }
+      });
+    })
+  ).then(() => {
+    return true;
   });
-  const [approvePurchaseResult] = await Promise.all(productsArray); // []
-  if (approvePurchaseResult.length) return true; // [[]]
-  return false;
 };
 // const approvedOrder = Promise.all(productsArray);
 // approvedOrder.then(console.log('ahora sì', approvedOrder));

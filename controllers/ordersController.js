@@ -1,6 +1,6 @@
 const uuid = require('uuid');
 const Order = require('../models/Order');
-const uuid = require('node-uuid');
+const Product = require('../models/Product');
 const { approveOrderProducts } = require('../services/orderService');
 
 const getAllOrders = async (_, res) => {
@@ -12,32 +12,65 @@ const getAllOrders = async (_, res) => {
   }
 };
 
-const createOrder = (req, res) => {
-  console.log('probando');
-  console.log(req.body);
-  const { clientId, items } = req.body;
-  // chequear en la base que haya stock y el precio sea correcto
-  // si es correcto aprueba y agrega item a la orden
-  // si hay error en al menos 1 item, desaprueba
-  // actualizar stock
-  // generar orden
+const createOrder = async (req, res) => {
+  const { items, client } = req.body;
   const newOrder = new Order({
-    uuid: uuid(),
-    clientId,
+    client_id: client,
+    date: new Date(),
     items,
   });
-  approveOrderProducts(items);
-  try {
-    newOrder.save((error) => {
-      if (error) {
-        res.status(400).json({ error });
-      }
-      res.status(201).json({ message: 'Orden enviada' });
-    });
-  } catch (err) {
-    console.error('HUBO UN ERROR', err);
-    res.status(404).send('La información ingresada no es válida');
-  }
+  await Promise.all(
+    items.map(async (item) => {
+      // valida que haya stock y el precio sea correcto
+      await Product.findById(item.id, function (err, data) {
+        if (data.stock >= item.quantity && data.price === item.price) {
+          console.log('ok');
+        } else {
+          res
+            .status(400)
+            .json({ message: 'Datos ingresados incorrectos', product: item });
+          return;
+        }
+      });
+    })
+  )
+    .then(
+      // actualiza stock
+      Promise.all(
+        items.map(async (item) => {
+          Product.findById(item.id, function (err, data) {
+            if (err) console.error(err);
+            else {
+              Product.findByIdAndUpdate(
+                item.id,
+                {
+                  stock: data.stock - item.quantity,
+                  //status: newStock === 0 ? 'Sin stock' : 'En stock', // arreglar esto
+                },
+                function (err, data) {
+                  console.log('updated');
+                }
+              );
+            }
+          });
+        })
+      )
+    )
+    .then(
+      //crea la orden
+      // try {
+      newOrder.save((error) => {
+        if (error) {
+          res.status(400).json({ message: error.message });
+        }
+        res.status(201).json({ message: 'Orden creada' });
+      })
+      // } catch (err) {
+      //   console.error('HUBO UN ERROR', err);
+      //   res.status(404).send('La información ingresada no es válida');
+      // }
+    )
+    .then(res.status(200));
 };
 
 const getSingleOrder = async (req, res) => {
