@@ -7,12 +7,9 @@ const OrderSchema = Schema({
   //   required: true,
   // },
   client_id: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
-    // TODO vincular con user
-    // type: Schema.Types.ObjectId,
-    // ref: 'User',
-    // required: true,
   },
   items: {
     type: Array,
