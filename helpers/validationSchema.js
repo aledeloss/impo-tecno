@@ -21,7 +21,7 @@ const productValidationSchema = Joi.object({
   name: Joi.string().required(),
   price: Joi.number().required(), // dos decimales y positivo
   status: Joi.string()
-    .valid('En stock', 'Sin stock', 'Preventa', 'No disponible')
+    .valid('En stock', 'Sin stock', 'Preventa', 'No disponible') // Consultar por No disponible
     .required(),
   stock: Joi.number().integer().min(0).required(), // uno de los campos
   enabled: Joi.bool(),

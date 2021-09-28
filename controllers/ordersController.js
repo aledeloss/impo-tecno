@@ -19,53 +19,41 @@ const createOrder = async (req, res) => {
     date: new Date(),
     items,
   });
-  await Promise.all(
-    items.map(async (item) => {
-      // valida que haya stock y el precio sea correcto
-      await Product.findById(item.id, (err, data) => {
-        if (data.stock >= item.quantity && data.price === item.price) {
-          console.log('ok');
-        } else {
-          res
-            .status(400)
-            .json({ message: 'Datos ingresados incorrectos', product: item });
-          return;
-        }
-      });
-    })
-  )
-    .then(
-      // actualiza stock
-      Promise.all(
-        items.map(async (item) => {
-          Product.findById(item.id, (err, data) => {
-            if (err) console.error(err);
-            else {
-              Product.findByIdAndUpdate(
-                item.id,
-                {
-                  stock: data.stock - item.quantity,
-                  //status: newStock === 0 ? 'Sin stock' : 'En stock', // arreglar esto
-                },
-                (err, data) => {
-                  console.log('updated');
-                }
-              );
-            }
-          });
-        })
-      )
-    )
-    .then(
-      // crea la orden
-      newOrder.save((error) => {
-        if (error) {
-          res.status(400).json({ message: error.message });
-        }
-        res.status(201).json({ message: 'Orden creada', newOrder });
-      })
-    )
-    .then(res.status(200));
+  const idsArray = items.map((item) => item.id);
+
+  const productsData = await Product.find({
+    _id: {
+      $in: idsArray,
+    },
+  });
+
+  for (let i = 0; i < productsData.length; i++) {
+    const product = productsData[i];
+    const item = items.find((elem) => elem.id === product.id);
+    if (
+      item &&
+      product.stock >= item.quantity &&
+      product.price === item.price
+    ) {
+      product.stock -= item.quantity;
+      product.status = product.stock === 0 ? 'Sin stock' : product.status;
+      console.log('prueba ok');
+    } else {
+      console.log('prueba error');
+      res
+        .status(400)
+        .json({ message: 'Datos ingresados incorrectos', product: item });
+      return;
+    }
+  }
+  try {
+    await Product.bulkSave(productsData);
+    await newOrder.save();
+    res.status(201).json({ message: 'Orden creada', newOrder });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: error.message });
+  }
 };
 
 const getSingleOrder = async (req, res) => {
