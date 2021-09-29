@@ -1,7 +1,5 @@
-const uuid = require('uuid');
 const Order = require('../models/Order');
 const Product = require('../models/Product');
-const { approveOrderProducts } = require('../services/orderService');
 
 const getAllOrders = async (_, res) => {
   try {

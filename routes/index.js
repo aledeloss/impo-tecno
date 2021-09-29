@@ -5,10 +5,10 @@ const usersRouter = require('./auth');
 const ordersRouter = require('./orders');
 const productsRouter = require('./products');
 
-const { securedUser } = require('../middlewares/auth');
+const { secureUser } = require('../middlewares/auth');
 
 router.use('/users', usersRouter);
-router.use('/products', securedUser, productsRouter);
-router.use('/orders', securedUser, ordersRouter);
+router.use('/products', secureUser, productsRouter);
+router.use('/orders', secureUser, ordersRouter);
 
 module.exports = router;

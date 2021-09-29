@@ -1,5 +1,6 @@
 const express = require('express');
 const { validateProductData } = require('../middlewares/validateProduct');
+const { secureAdmin, secureUser } = require('../middlewares/auth');
 
 const router = express.Router();
 const {
@@ -9,10 +10,9 @@ const {
   editProduct,
 } = require('../controllers/productsController');
 
-/* GET home page. */
-router.get('/all', getAllProducts);
-router.post('/create', validateProductData, createProduct);
-router.get('/:id/edit', singleProduct);
-router.put('/:id/edit', validateProductData, editProduct);
+router.get('/all', secureUser, getAllProducts);
+router.post('/create', secureAdmin, validateProductData, createProduct);
+router.get('/:id/edit', secureAdmin, singleProduct);
+router.put('/:id/edit', secureAdmin, validateProductData, editProduct);
 
 module.exports = router;

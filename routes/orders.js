@@ -1,5 +1,9 @@
 const express = require('express');
-const { secureAdmin, secureClientRoutes } = require('../middlewares/auth');
+const {
+  secureAdmin,
+  secureUser,
+  secureClientRoutes,
+} = require('../middlewares/auth');
 
 const router = express.Router();
 const {
@@ -10,9 +14,9 @@ const {
   editOrder,
 } = require('../controllers/ordersController');
 
-router.post('/create', createOrder);
+router.post('/create', secureUser, createOrder);
 router.get('/all', secureAdmin, getAllOrders);
-router.get('/my_orders', getClientOrders);
+router.get('/my_orders', secureUser, getClientOrders);
 router.get('/:id', secureClientRoutes, getSingleOrder);
 router.get('/:id/edit', secureAdmin, getSingleOrder);
 router.put('/:id/edit', secureAdmin, editOrder);

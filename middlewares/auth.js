@@ -3,7 +3,7 @@ const { decodeToken } = require('../services/authService');
 const Order = require('../models/Order');
 const User = require('../models/User');
 
-const securedUser = (req, res, next) => {
+const secureUser = (req, res, next) => {
   try {
     const { authorization } = req.headers;
     const { _id } = decodeToken(authorization);
@@ -67,4 +67,4 @@ const secureClientRoutes = async (req, res, next) => {
   }
 };
 
-module.exports = { secureAdmin, securedUser, secureClientRoutes };
+module.exports = { secureAdmin, secureUser, secureClientRoutes };

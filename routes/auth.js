@@ -1,9 +1,10 @@
-var express = require('express');
-var router = express.Router();
-const { createUser, auth } = require('../controllers/authControllers');
+const express = require('express');
 
-/* GET users listing. */
-router.post('/create', createUser);
+const router = express.Router();
+const { createUser, auth } = require('../controllers/authControllers');
+const { secureAdmin } = require('../middlewares/auth');
+
+router.post('/create', secureAdmin, createUser);
 router.post('/login', auth);
 
 module.exports = router;
