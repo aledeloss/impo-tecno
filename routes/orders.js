@@ -1,4 +1,5 @@
 const express = require('express');
+const { secureAdmin, secureClientRoutes } = require('../middlewares/auth');
 
 const router = express.Router();
 const {
@@ -10,10 +11,10 @@ const {
 } = require('../controllers/ordersController');
 
 router.post('/create', createOrder);
-router.get('/all', getAllOrders);
+router.get('/all', secureAdmin, getAllOrders);
 router.get('/my_orders', getClientOrders);
-router.get('/:id', getSingleOrder);
-router.get('/:id/edit', getSingleOrder);
-router.put('/:id/edit', editOrder);
+router.get('/:id', secureClientRoutes, getSingleOrder);
+router.get('/:id/edit', secureAdmin, getSingleOrder);
+router.put('/:id/edit', secureAdmin, editOrder);
 
 module.exports = router;

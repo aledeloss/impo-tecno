@@ -9,6 +9,12 @@ const auth = async (req, res) => {
     const user = await User.findOne({ email });
     const isPasswordValid = unhash(pwd, user.password);
 
+    if (!isPasswordValid) {
+      return res
+        .status(401)
+        .json({ message: 'Usuario o password incorrectos' });
+    }
+
     const JWTOBject = {
       _id: user.id,
       email: user.email,
@@ -16,12 +22,7 @@ const auth = async (req, res) => {
       role: user.role,
     };
     const JWT = createToken(JWTOBject);
-    console.log(JWT);
-    if (!isPasswordValid) {
-      return res
-        .status(401)
-        .json({ message: 'Usuario o password incorrectos' });
-    }
+
     res.status(200).json({ message: 'Bienivenide', JWT });
     res.end();
   } catch (err) {

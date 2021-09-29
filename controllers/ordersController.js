@@ -13,9 +13,9 @@ const getAllOrders = async (_, res) => {
 };
 
 const createOrder = async (req, res) => {
-  const { items, client } = req.body;
+  const { items } = req.body;
   const newOrder = new Order({
-    client_id: client,
+    client_id: req.id,
     date: new Date(),
     items,
   });
@@ -60,7 +60,7 @@ const getSingleOrder = async (req, res) => {
   try {
     const { id } = req.params;
     console.log('id', id);
-    const data = await Order.findById(id);
+    const data = await Order.find({ id, client_id: req.id });
     res.json(data);
   } catch (e) {
     console.error(e);
@@ -69,26 +69,25 @@ const getSingleOrder = async (req, res) => {
 };
 
 const getClientOrders = async (req, res) => {
-  // TODO: sacar el ID del jwt en lugar del body pelado
-  const { clientId } = req.body;
-  Order.find({ client_id: clientId }, (error, data) => {
-    if (error) console.error(error);
-    else {
-      res.json(data);
-    }
-  });
+  try {
+    const orders = await Order.find({ client_id: req.id });
+    res.status(200).json(orders);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
 };
 
 const editOrder = async (req, res) => {
   const { id } = req.params;
-  const { clientId, items, date } = req.body;
+  const { items, date } = req.body;
   Order.findOne({ _id: id }, (err, ord) => {
     if (err) {
       console.error(err);
       return res('Device update failed', null);
     }
     // const validatedItems = validateItems(items);
-    ord.client_id = clientId;
+    ord.client_id = req.id;
     ord.items = items;
     ord.date = date;
     ord.ts_update = Date.now();

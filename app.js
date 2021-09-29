@@ -6,7 +6,6 @@ const logger = require('morgan');
 const dotenv = require('dotenv');
 
 const { dbConnection } = require('./database/config');
-// const { securedUser, secureAdmin } = require('./middlewares/auth');
 dotenv.config();
 dbConnection();
 

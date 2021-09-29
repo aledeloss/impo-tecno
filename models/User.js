@@ -16,10 +16,10 @@ const UserSchema = Schema(
       type: String,
       required: true,
     },
-    verificationCode: {
-      type: String,
-      required: true,
-    },
+    // verificationCode: {
+    //   type: String,
+    //   required: true,
+    // },
     role: {
       type: String,
       default: 'user',

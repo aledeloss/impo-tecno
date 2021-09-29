@@ -4,19 +4,17 @@ const Product = require('../models/Product');
 // const { createTicket } = require("../utils/pdfGen");
 
 const newOrder = async (req) => {
-  const { clientId, items } = req.body;
+  const { items } = req.body;
 
   const validateOrder = items.map((item) => {});
   const newOrder = new Order({
     uuid: uuid(),
-    clientId,
+    clientId: req.id,
     items,
   });
 };
 
-const approveOrderProducts = async (items) => {
-};
-
+const approveOrderProducts = async (items) => {};
 
 const updateStock = async (products) => {
   console.log(products);
