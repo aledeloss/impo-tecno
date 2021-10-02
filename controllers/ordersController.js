@@ -1,5 +1,7 @@
 const Order = require('../models/Order');
 const Product = require('../models/Product');
+const { sendEmail } = require('../services/mailingService');
+const { newOrderEmailTemplate } = require('../utils/newOrderEmailTemplate');
 
 const getAllOrders = async (_, res) => {
   try {
@@ -47,6 +49,8 @@ const createOrder = async (req, res) => {
   try {
     await Product.bulkSave(productsData);
     await newOrder.save();
+    const html = newOrderEmailTemplate(req);
+    await sendEmail({ html });
     res.status(201).json({ message: 'Orden creada', newOrder });
   } catch (error) {
     console.error(error);
@@ -84,7 +88,6 @@ const editOrder = async (req, res) => {
       console.error(err);
       return res('Device update failed', null);
     }
-    // const validatedItems = validateItems(items);
     ord.client_id = req.id;
     ord.items = items;
     ord.date = date;
