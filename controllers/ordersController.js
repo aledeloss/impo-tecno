@@ -1,5 +1,6 @@
 const Order = require('../models/Order');
 const Product = require('../models/Product');
+const User = require('../models/User');
 const { sendEmail } = require('../services/mailingService');
 const { newOrderEmailTemplate } = require('../utils/newOrderEmailTemplate');
 
@@ -14,8 +15,9 @@ const getAllOrders = async (_, res) => {
 
 const createOrder = async (req, res) => {
   const { items } = req.body;
-  const newOrder = new Order({
-    client_id: req.id,
+  const clientData = await User.findById(req.id);
+  const newOrder = new Order({ // TODO: ver si agrego acá el clientName
+    client_id: clientData.id,
     date: new Date(),
     items,
   });
@@ -37,9 +39,7 @@ const createOrder = async (req, res) => {
     ) {
       product.stock -= item.quantity;
       product.status = product.stock === 0 ? 'Sin stock' : product.status;
-      console.log('prueba ok');
     } else {
-      console.log('prueba error');
       res
         .status(400)
         .json({ message: 'Datos ingresados incorrectos', product: item });
@@ -49,7 +49,7 @@ const createOrder = async (req, res) => {
   try {
     await Product.bulkSave(productsData);
     await newOrder.save();
-    const html = newOrderEmailTemplate(req);
+    const html = newOrderEmailTemplate(newOrder);
     await sendEmail({ html });
     res.status(201).json({ message: 'Orden creada', newOrder });
   } catch (error) {

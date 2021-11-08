@@ -1,17 +1,8 @@
-// const sendEmail = async (req, res) => {
-//   try {
-//   } catch (e) {
-//     console.error(e);
-//     res.sendStatus(500);
-//   }
-// };
-
-('use strict');
 const nodemailer = require('nodemailer');
 
 const sendEmail = async ({
   to = process.env.USER_EMAIL,
-  subject = 'Prueba de mail',
+  subject = 'Gracias por contactarte con IMPORTADORA',
   html,
 }) => {
   try {
@@ -34,10 +25,8 @@ const sendEmail = async ({
       subject,
       html,
     });
-
+    console.log(info);
     return info.messageId;
-
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
   } catch (e) {
     console.error(e);
     throw e;
