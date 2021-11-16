@@ -16,7 +16,9 @@ const getAllOrders = async (_, res) => {
 const createOrder = async (req, res) => {
   const { items } = req.body;
   const clientData = await User.findById(req.id);
-  const newOrder = new Order({ // TODO: ver si agrego acá el clientName
+  console.log(clientData);
+  const newOrder = new Order({
+    // TODO: ver si agrego acá el clientName
     client_id: clientData.id,
     date: new Date(),
     items,
@@ -50,7 +52,7 @@ const createOrder = async (req, res) => {
     await Product.bulkSave(productsData);
     await newOrder.save();
     const html = newOrderEmailTemplate(newOrder);
-    await sendEmail({ html });
+    await sendEmail(clientData.email, html);
     res.status(201).json({ message: 'Orden creada', newOrder });
   } catch (error) {
     console.error(error);

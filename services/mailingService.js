@@ -1,10 +1,10 @@
 const nodemailer = require('nodemailer');
 
-const sendEmail = async ({
-  to = process.env.USER_EMAIL,
-  subject = 'Gracias por contactarte con IMPORTADORA',
+const sendEmail = async (
+  to,
   html,
-}) => {
+  subject = 'Recibimos la orden de compra a TecnoBox'
+) => {
   try {
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -20,8 +20,9 @@ const sendEmail = async ({
     });
 
     const info = await transporter.sendMail({
-      from: '"IMPORTADOR" <no-replay@importadora.com>',
+      from: '"TecnoBox" <no-replay@tecnobox.com>',
       to,
+      bbc: process.env.ADMIN_EMAIL,
       subject,
       html,
     });
