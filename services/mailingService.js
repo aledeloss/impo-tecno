@@ -25,6 +25,13 @@ const sendEmail = async (
       bbc: process.env.ADMIN_EMAIL,
       subject,
       html,
+      attachments: [
+        {
+          filename: 'logo.png',
+          path: 'assets/logo.png',
+          cid: 'logo@nodemailer.com',
+        },
+      ],
     });
     console.log(info);
     return info.messageId;
