@@ -11,10 +11,7 @@ const secureUser = (req, res, next) => {
     next();
   } catch (e) {
     console.error(e);
-    res.status(401).json({
-      message: 'No autorizado',
-      imag: 'https://http.cat/401',
-    });
+    res.redirect('/login');
   }
 };
 
@@ -30,10 +27,7 @@ const secureAdmin = (req, res, next) => {
     next();
   } catch (e) {
     console.error(e);
-    res.status(401).json({
-      message: 'No autorizado',
-      imag: 'https://http.cat/401',
-    });
+    res.redirect('/products/all');
   }
 };
 
