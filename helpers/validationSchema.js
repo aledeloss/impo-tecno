@@ -28,15 +28,11 @@ const productValidationSchema = Joi.object({
 });
 
 const orderValidationSchema = Joi.object({
-  // category: Joi.string().valid('').required(), // uno de los campos
-  // trademark: Joi.string().required(), //
-  // name: Joi.string().required(),
-  // price: Joi.number().required(), // dos decimales y positivo
-  // status: Joi.string()
-  //   .valid('En stock', 'Sin stock', 'Preventa', 'No disponible')
-  //   .required(),
-  // stock: Joi.number().integer().min(0).required(), // uno de los campos
-  // enabled: Joi.bool(),
+  cliente_id: Joi.string().required(),
+  items: Joi.array().required(),
+  date: Joi.date(),
+  status: Joi.string().valid('en camino', 'cancelado', 'entregado').required(),
+  enabled: Joi.boolean().required(),
 });
 
 module.exports = {

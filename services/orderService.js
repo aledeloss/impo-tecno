@@ -14,7 +14,41 @@ const newOrder = async (req) => {
   });
 };
 
-const approveOrderProducts = async (items) => {};
+const approveOrderProducts = async (items) => {
+  // busca en la bd la data de los productos
+  const idsArray = items.map((item) => item.id);
+  const productsData = await Product.find({
+    _id: {
+      $in: idsArray,
+    },
+  });
+  // valida los datos ingresados
+  for (let i = 0; i < productsData.length; i++) {
+    const product = productsData[i];
+    const item = items.find((elem) => elem.id === product.id);
+    if (
+      item &&
+      product.stock >= item.quantity &&
+      product.price === item.price
+    ) {
+      product.stock -= item.quantity;
+      product.status = product.stock === 0 ? 'Sin stock' : product.status;
+    } else {
+      res
+        .status(400)
+        .json({ message: 'Datos ingresados incorrectos', product: item });
+      return;
+    }
+  }
+  return productsData;
+};
+
+const calculateTotal = (items) => {
+  const result = items.reduce(
+    (a, b) => a.quantity * a.price + b.quantity * b.price
+  );
+  return result;
+};
 
 const updateStock = async (products) => {
   console.log(products);
@@ -37,4 +71,5 @@ const updateStock = async (products) => {
 module.exports = {
   newOrder,
   approveOrderProducts,
+  calculateTotal,
 };

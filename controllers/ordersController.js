@@ -2,6 +2,10 @@ const Order = require('../models/Order');
 const Product = require('../models/Product');
 const User = require('../models/User');
 const { sendEmail } = require('../services/mailingService');
+const {
+  approveOrderProducts,
+  calculateTotal,
+} = require('../services/orderService');
 const { newOrderEmailTemplate } = require('../utils/newOrderEmailTemplate');
 
 const getAllOrders = async (_, res) => {
@@ -16,44 +20,23 @@ const getAllOrders = async (_, res) => {
 const createOrder = async (req, res) => {
   const { items } = req.body;
   const clientData = await User.findById(req.id);
-  console.log(clientData);
+  const total = calculateTotal(items);
+  const ordersQuantity = await Order.find().estimatedDocumentCount();
   const newOrder = new Order({
-    // TODO: ver si agrego acá el clientName
     client_id: clientData.id,
-    date: new Date(),
+    code: (ordersQuantity + 1).toString().padStart(6, '0'),
     items,
-  });
-  const idsArray = items.map((item) => item.id);
-
-  const productsData = await Product.find({
-    _id: {
-      $in: idsArray,
-    },
+    total,
   });
 
-  for (let i = 0; i < productsData.length; i++) {
-    const product = productsData[i];
-    const item = items.find((elem) => elem.id === product.id);
-    if (
-      item &&
-      product.stock >= item.quantity &&
-      product.price === item.price
-    ) {
-      product.stock -= item.quantity;
-      product.status = product.stock === 0 ? 'Sin stock' : product.status;
-    } else {
-      res
-        .status(400)
-        .json({ message: 'Datos ingresados incorrectos', product: item });
-      return;
-    }
-  }
+  const productsData = await approveOrderProducts(items);
+
   try {
     await Product.bulkSave(productsData);
-    await newOrder.save();
+    const registeredOrder = await newOrder.save();
     const html = newOrderEmailTemplate(newOrder);
     await sendEmail(clientData.email, html);
-    res.status(201).json({ message: 'Orden creada', newOrder });
+    res.status(201).json({ message: 'Orden creada', registeredOrder });
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: error.message });
@@ -84,7 +67,7 @@ const getClientOrders = async (req, res) => {
 
 const editOrder = async (req, res) => {
   const { id } = req.params;
-  const { items, date } = req.body;
+  const { items } = req.body;
   Order.findOne({ _id: id }, (err, ord) => {
     if (err) {
       console.error(err);
@@ -92,14 +75,13 @@ const editOrder = async (req, res) => {
     }
     ord.client_id = req.id;
     ord.items = items;
-    ord.date = date;
+    ord.items = calculateTotal(items);
     ord.ts_update = Date.now();
-    ord.save((err, ord) => {
+    const editedOrder = ord.save((err, ord) => {
       if (err) {
         console.error(err);
       }
-      console.log('Se guardó el producto editado', ord);
-      res.json(ord);
+      res.json(editedOrder);
     });
   });
 };
