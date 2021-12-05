@@ -7,6 +7,7 @@ const dbConnection = async () => {
       sslValidate: false,
     });
     console.log('Conectado a la DB');
+    console.log(`Escuchando puerto ${process.env.PORT}`);
   } catch (e) {
     console.error(e);
   }
