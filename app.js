@@ -6,6 +6,7 @@ const logger = require('morgan');
 const dotenv = require('dotenv');
 
 const { dbConnection } = require('./database/config');
+
 dotenv.config();
 dbConnection();
 
