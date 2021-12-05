@@ -7,9 +7,6 @@ const productsRouter = require('./products');
 
 const { secureUser } = require('../middlewares/auth');
 
-router.use('/', (req, res) => {
-  res.send('Hello Tecnobox!');
-});
 router.use('/users', usersRouter);
 router.use('/products', secureUser, productsRouter);
 router.use('/orders', secureUser, ordersRouter);
