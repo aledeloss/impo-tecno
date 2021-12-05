@@ -9,12 +9,13 @@ const {
 const { newOrderEmailTemplate } = require('../utils/newOrderEmailTemplate');
 
 const getAllOrders = async (_, res) => {
-  try {
-    const data = await Order.find();
-    res.json(data);
-  } catch (e) {
-    console.error(e);
-  }
+  res.send('Hola hola Tecnobox!');
+  // try {
+  //   const data = await Order.find();
+  //   res.json(data);
+  // } catch (e) {
+  //   console.error(e);
+  // }
 };
 
 const createOrder = async (req, res) => {
