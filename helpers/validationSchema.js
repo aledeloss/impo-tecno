@@ -28,10 +28,12 @@ const productValidationSchema = Joi.object({
 });
 
 const orderValidationSchema = Joi.object({
-  cliente_id: Joi.string().required(),
+  client_id: Joi.string().required(),
   items: Joi.array().required(),
   date: Joi.date(),
-  status: Joi.string().valid('en camino', 'cancelado', 'entregado').required(),
+  status: Joi.string()
+    .valid('Pendiente de pago', 'En camino', 'Cancelado', 'Entregado')
+    .required(),
   enabled: Joi.boolean().required(),
 });
 

@@ -1,5 +1,5 @@
 const express = require('express');
-const { validateProductData } = require('../middlewares/validateProduct');
+const { validateProductData } = require('../middlewares/validations');
 const { secureAdmin, secureUser } = require('../middlewares/auth');
 
 const router = express.Router();

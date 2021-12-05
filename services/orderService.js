@@ -6,6 +6,7 @@ const Product = require('../models/Product');
 const newOrder = async (req) => {
   const { items } = req.body;
 
+  
   const validateOrder = items.map((item) => {});
   const newOrder = new Order({
     uuid: uuid(),
@@ -68,6 +69,7 @@ const updateStock = async (products) => {
     console.error(e);
   }
 };
+
 module.exports = {
   newOrder,
   approveOrderProducts,

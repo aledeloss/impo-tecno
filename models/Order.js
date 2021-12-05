@@ -20,7 +20,7 @@ const OrderSchema = Schema({
   },
   status: {
     type: String,
-    default: 'en camino',
+    default: 'Pendiente de pago',
   },
   enabled: {
     type: Boolean,

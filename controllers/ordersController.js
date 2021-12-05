@@ -24,7 +24,7 @@ const createOrder = async (req, res) => {
   const ordersQuantity = await Order.find().estimatedDocumentCount();
   const newOrder = new Order({
     client_id: clientData.id,
-    code: (ordersQuantity + 1).toString().padStart(6, '0'),
+    code: (ordersQuantity + 1).toString(),
     items,
     total,
   });
@@ -67,7 +67,31 @@ const getClientOrders = async (req, res) => {
 
 const editOrder = async (req, res) => {
   const { id } = req.params;
-  const { items } = req.body;
+  const { items, status } = req.body;
+  Order.findOne({ _id: id }, (err, ord) => {
+    if (err) {
+      console.error(err);
+      return res('Device update failed', null);
+    }
+    ord.client_id = req.id;
+    ord.items = items; // por si edito el status de algún item.
+    const pendingItems = items.filter((item) => {
+      item.status !== 'Entregado';
+    });
+    ord.status = status;
+    ord.ts_update = Date.now();
+    const editedOrder = ord.save((err, ord) => {
+      if (err) {
+        console.error(err);
+      }
+      res.json(editedOrder);
+    });
+  });
+};
+
+const cancelOrder = async (req, res) => {
+  const { id } = req.params;
+  const { items, status } = req.body;
   Order.findOne({ _id: id }, (err, ord) => {
     if (err) {
       console.error(err);
@@ -75,7 +99,7 @@ const editOrder = async (req, res) => {
     }
     ord.client_id = req.id;
     ord.items = items;
-    ord.items = calculateTotal(items);
+    ord.status = 'cancelada';
     ord.ts_update = Date.now();
     const editedOrder = ord.save((err, ord) => {
       if (err) {
@@ -92,4 +116,5 @@ module.exports = {
   getClientOrders,
   getSingleOrder,
   editOrder,
+  cancelOrder,
 };
