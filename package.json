@@ -1,15 +1,15 @@
 {
   "name": "impotectno",
   "version": "0.0.0",
-  "private": false,
+  "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node ./bin/www"
+    //"start": "node app.js"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "bcrypt": "^5.0.1",
     "cookie-parser": "~1.4.4",
-    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^10.0.0",
     "express": "~4.16.1",
@@ -30,5 +30,9 @@
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0"
+  },
+  "engines": {
+    "node": "14.x"
   }
 }
+
