@@ -23,7 +23,7 @@ const auth = async (req, res) => {
     };
     const JWT = createToken(JWTOBject);
 
-    res.status(200).json({ message: 'Bienivenide', JWT });
+    res.status(200).json({ companyName: user.companyName, JWT });
     res.end();
   } catch (err) {
     console.error(err.message);
