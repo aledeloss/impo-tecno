@@ -24,6 +24,7 @@ const createOrder = async (req, res) => {
   const ordersQuantity = await Order.find().estimatedDocumentCount();
   const newOrder = new Order({
     client_id: clientData.id,
+    companyName: clientData.companyName,
     code: (ordersQuantity + 1).toString(),
     items,
     total,

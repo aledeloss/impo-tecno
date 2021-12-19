@@ -10,6 +10,10 @@ const OrderSchema = Schema({
     ref: 'User',
     required: true,
   },
+  companyName: {
+    type: String,
+    required: true,
+  },
   items: {
     type: Array,
     required: true,
