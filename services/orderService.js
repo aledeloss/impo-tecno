@@ -1,12 +1,10 @@
 const uuid = require('uuid'); //
 const Order = require('../models/Order');
 const Product = require('../models/Product');
-// const { createTicket } = require("../utils/pdfGen");
 
 const newOrder = async (req) => {
   const { items } = req.body;
 
-  
   const validateOrder = items.map((item) => {});
   const newOrder = new Order({
     uuid: uuid(),
@@ -35,24 +33,21 @@ const approveOrderProducts = async (items) => {
       product.stock -= item.quantity;
       product.status = product.stock === 0 ? 'Sin stock' : product.status;
     } else {
-      res
-        .status(400)
-        .json({ message: 'Datos ingresados incorrectos', product: item });
-      return;
+      return 'Datos ingresados incorrectos';
     }
   }
   return productsData;
 };
 
 const calculateTotal = (items) => {
-  const result = items.reduce(
-    (a, b) => a.quantity * a.price + b.quantity * b.price
-  );
-  return result;
+  if (items[1]) {
+    return items.reduce((a, b) => a.quantity * a.price + b.quantity * b.price);
+  }
+  return items[0].quantity * items[0].price;
 };
 
 const updateStock = async (products) => {
-  console.log(products);
+  console.log('updated products', products);
   try {
     const result = products.map(({ id, quantity }) => {
       Product.updateOne(

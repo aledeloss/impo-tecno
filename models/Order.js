@@ -10,9 +10,9 @@ const OrderSchema = Schema({
     ref: 'User',
     required: true,
   },
-  companyName: {
+  company_name: {
     type: String,
-    required: true,
+    required: false,
   },
   items: {
     type: Array,
@@ -24,7 +24,7 @@ const OrderSchema = Schema({
   },
   status: {
     type: String,
-    default: 'Pendiente de pago',
+    default: 'pago pendiente',
   },
   enabled: {
     type: Boolean,

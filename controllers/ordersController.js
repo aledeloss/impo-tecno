@@ -20,17 +20,22 @@ const getAllOrders = async (_, res) => {
 const createOrder = async (req, res) => {
   const { items } = req.body;
   const clientData = await User.findById(req.id);
+  console.log(clientData);
   const total = calculateTotal(items);
   const ordersQuantity = await Order.find().estimatedDocumentCount();
   const newOrder = new Order({
     client_id: clientData.id,
-    companyName: clientData.companyName,
+    company_name: clientData.companyName,
     code: (ordersQuantity + 1).toString(),
     items,
     total,
   });
 
   const productsData = await approveOrderProducts(items);
+
+  if (productsData === 'Datos ingresados incorrectos') {
+    res.status(400).json({ message: 'Datos ingresados incorrectos' });
+  }
 
   try {
     await Product.bulkSave(productsData);
