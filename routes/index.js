@@ -8,9 +8,7 @@ const productsRouter = require('./products');
 const { secureUser } = require('../middlewares/auth');
 
 router.use('/users', usersRouter);
-// router.use('/products', secureUser, productsRouter);
-// router.use('/orders', secureUser, ordersRouter);
-router.use('/products', productsRouter);
-router.use('/orders', ordersRouter);
+router.use('/products', secureUser, productsRouter);
+router.use('/orders', secureUser, ordersRouter);
 
 module.exports = router;
