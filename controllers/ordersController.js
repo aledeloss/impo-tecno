@@ -71,26 +71,24 @@ const getClientOrders = async (req, res) => {
   }
 };
 
+// Solo permite editar el status de la orden.
 const editOrder = async (req, res) => {
   const { id } = req.params;
-  const { items, status } = req.body;
+  const { status } = req.body;
   Order.findOne({ _id: id }, (err, ord) => {
     if (err) {
       console.error(err);
-      return res('Device update failed', null);
+      return res('No se pudo editar la orden', null);
     }
-    ord.client_id = req.id;
-    ord.items = items; // por si edito el status de algún item.
-    const pendingItems = items.filter((item) => {
-      item.status !== 'Entregado';
-    });
+    // ord.items = items;
     ord.status = status;
     ord.ts_update = Date.now();
-    const editedOrder = ord.save((err, ord) => {
+    ord.save((err, prod) => {
       if (err) {
         console.error(err);
       }
-      res.json(editedOrder);
+      console.log('Se guardó el producto editado', ord);
+      res.status(200).json({ message: 'Orden editada', editedOrder: ord });
     });
   });
 };
