@@ -75,13 +75,13 @@ const getClientOrders = async (req, res) => {
 // Solo permite editar el status de la orden.
 const editOrder = async (req, res) => {
   const { id } = req.params;
-  const { status } = req.body;
+  const { status, items } = req.body;
   Order.findOne({ _id: id }, (err, ord) => {
     if (err) {
       console.error(err);
       return res('No se pudo editar la orden', null);
     }
-    // ord.items = items;
+    ord.items = items;
     ord.status = status;
     ord.ts_update = Date.now();
     ord.save((err, prod) => {
