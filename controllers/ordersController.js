@@ -50,10 +50,11 @@ const createOrder = async (req, res) => {
 };
 
 const getSingleOrder = async (req, res) => {
+  console.log('single order');
   try {
     const { id } = req.params;
     console.log('id', id);
-    const data = await Order.find({ id, client_id: req.id });
+    const data = await Order.findById(id);
     res.json(data);
   } catch (e) {
     console.error(e);
