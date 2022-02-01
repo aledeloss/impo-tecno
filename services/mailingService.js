@@ -11,7 +11,7 @@ const sendEmail = async (
       port: 587,
       secure: false, // true for 465, false for other ports TODO: va a cambiar en producción
       auth: {
-        user: process.env.USER_EMAIL,
+        user: process.env.ADMIN_EMAIL,
         pass: process.env.PASSWORD_EMAIL,
       },
       tls: {
