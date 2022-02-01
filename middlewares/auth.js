@@ -24,6 +24,7 @@ const secureAdmin = (req, res, next) => {
     }
     req.id = _id;
     req.role = role;
+    console.log('Secure admin ok');
     next();
   } catch (e) {
     console.error(e);
