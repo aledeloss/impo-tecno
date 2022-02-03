@@ -18,10 +18,10 @@ const getAllOrders = async (_, res) => {
 };
 
 const createOrder = async (req, res) => {
-  const { items } = req.body;
+  const { items, total } = req.body;
   const clientData = await User.findById(req.id);
   console.log(clientData);
-  const total = calculateTotal(items);
+  // const total = calculateTotal(items);
   const ordersQuantity = await Order.find().estimatedDocumentCount();
   const newOrder = new Order({
     client_id: clientData.id,
