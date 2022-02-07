@@ -3,18 +3,33 @@ const Joi = require('@hapi/joi');
 const productValidationSchema = Joi.object({
   category: Joi.string()
     .valid(
-      'Motherboard',
-      'Refrigeración',
-      'Microprocesadores',
-      'Fuentes de alimentación',
       'Adaptadores',
+      'ASIC',
+      'Auriculares',
       'Cables',
+      'Combo',
+      'Cooler',
+      'Discos HDD',
+      'Discos SDD',
+      'Estructuras RIG',
+      'Fuentes',
+      'Gabinete',
       'Memoria RAM',
-      'Monitores',
-      'Placas de video',
-      'Discos de almacenamiento',
-      'Accesorios',
-      'Estructuras'
+      'Micrófono',
+      'Microprocesador',
+      'Monitor',
+      'Motherboard',
+      'Mouse',
+      'Mousepad',
+      'Parlantes',
+      'Placas de Video',
+      'Powerbank',
+      'Refrigeración',
+      'RIG armado',
+      'Silla Gamer',
+      'Soporte para TV',
+      'Teclado',
+      'Webcam'
     )
     .required(),
   trademark: Joi.string().required(), //
