@@ -3,6 +3,7 @@ const Joi = require('@hapi/joi');
 const productValidationSchema = Joi.object({
   category: Joi.string()
     .valid(
+      'Accesorios',
       'Adaptadores',
       'ASIC',
       'Auriculares',
