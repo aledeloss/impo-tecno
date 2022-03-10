@@ -30,7 +30,7 @@ const productValidationSchema = Joi.object({
       'Silla Gamer',
       'Soporte para TV',
       'Teclado',
-      'Webcam'
+      'Webcam',
     )
     .required(),
   trademark: Joi.string().required(), //
@@ -41,6 +41,7 @@ const productValidationSchema = Joi.object({
     .required(),
   stock: Joi.number().integer().min(0).required(), // uno de los campos
   enabled: Joi.bool(),
+  current_time: Joi.date(),
 });
 
 const orderValidationSchema = Joi.object({
@@ -54,7 +55,7 @@ const orderValidationSchema = Joi.object({
       'entregado',
       'listo para envío',
       'cancelado',
-      'entregado'
+      'entregado',
     )
     .required(),
   enabled: Joi.boolean().required(),

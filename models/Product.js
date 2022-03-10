@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
 
-// revisar campos
 const ProductSchema = Schema({
   category: {
     type: String,
@@ -36,11 +35,11 @@ const ProductSchema = Schema({
   // },
   ts_create: {
     type: Date,
-    default: Date.now,
+    required: true,
   },
   ts_update: {
     type: Date,
-    default: Date.now,
+    required: true,
   },
 });
 

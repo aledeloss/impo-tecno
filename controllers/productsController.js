@@ -11,7 +11,9 @@ const getAllProducts = async (_, res) => {
 };
 
 const createProduct = (req, res) => {
-  const { category, trademark, name, price, stock, status } = req.body;
+  const {
+    category, trademark, name, price, stock, status, current_time,
+  } = req.body;
   const newProduct = new Product({
     category,
     trademark,
@@ -19,6 +21,8 @@ const createProduct = (req, res) => {
     price,
     stock,
     status,
+    ts_create: current_time,
+    ts_update: current_time,
   });
   try {
     newProduct.save((error) => {
@@ -49,7 +53,13 @@ const singleProduct = async (req, res) => {
 
 const editProduct = async (req, res) => {
   const { id } = req.params;
-  const { category, trademark, name, price, stock, status } = req.body;
+  const {
+    category, trademark, name, price, stock, status, current_time,
+  } = req.body;
+  let enabled = true;
+  if (req.body.enabled) {
+    enabled = false;
+  }
   Product.findOne({ _id: id }, (err, prod) => {
     if (err) {
       console.error(err);
@@ -61,7 +71,8 @@ const editProduct = async (req, res) => {
     prod.price = price;
     prod.stock = stock;
     prod.status = status;
-    prod.ts_update = Date.now();
+    prod.ts_update = current_time;
+    prod.enabled = enabled;
     prod.save((err, prod) => {
       if (err) {
         console.error(err);
@@ -72,8 +83,11 @@ const editProduct = async (req, res) => {
   });
 };
 
-const updateStatus = async(id) => {
-    
-}
+const updateStatus = async (id) => {};
 
-module.exports = { getAllProducts, createProduct, singleProduct, editProduct };
+module.exports = {
+  getAllProducts,
+  createProduct,
+  singleProduct,
+  editProduct,
+};
