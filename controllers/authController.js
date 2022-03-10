@@ -29,12 +29,12 @@ const auth = async (req, res) => {
     console.error(err.message);
   }
 };
+
 const createUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     let user = await User.findOne({ email }, { password });
-    if (user)
-      return res.status(400).json({ message: 'El mail ya está en uso' });
+    if (user) { return res.status(400).json({ message: 'El mail ya está en uso' }); }
     user = new User(req.body);
     user.password = hash(password);
     await user.save();
@@ -46,4 +46,13 @@ const createUser = async (req, res) => {
   }
 };
 
-module.exports = { createUser, auth };
+const getAllUsers = async (_, res) => {
+  try {
+    const data = await User.find();
+    res.json(data);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+module.exports = { createUser, auth, getAllUsers };
