@@ -57,7 +57,7 @@ const editProduct = async (req, res) => {
     category, trademark, name, price, stock, status, current_time,
   } = req.body;
   let enabled = true;
-  if (req.body.enabled) {
+  if (req.body.enabled === false) {
     enabled = false;
   }
   Product.findOne({ _id: id }, (err, prod) => {
