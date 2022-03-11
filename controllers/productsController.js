@@ -73,6 +73,7 @@ const editProduct = async (req, res) => {
     prod.status = status;
     prod.ts_update = current_time;
     prod.enabled = enabled;
+    prod.id = id;
     prod.save((err, prod) => {
       if (err) {
         console.error(err);
