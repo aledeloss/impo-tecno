@@ -34,11 +34,11 @@ const ProductSchema = Schema({
   //   required: true,
   // },
   ts_create: {
-    type: Date,
+    type: Object,
     required: true,
   },
   ts_update: {
-    type: Date,
+    type: Object,
     required: true,
   },
 });
