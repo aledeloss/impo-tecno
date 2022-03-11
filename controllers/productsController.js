@@ -24,6 +24,7 @@ const createProduct = (req, res) => {
     ts_create: current_time,
     ts_update: current_time,
   });
+  console.log('THE NEW PRODUCT IS', newProduct);
   try {
     newProduct.save((error) => {
       if (error) {
