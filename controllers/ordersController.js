@@ -20,7 +20,6 @@ const getAllOrders = async (_, res) => {
 const createOrder = async (req, res) => {
   const { items, total } = req.body;
   const clientData = await User.findById(req.id);
-  console.log(clientData);
   // const total = calculateTotal(items);
   const ordersQuantity = await Order.find().estimatedDocumentCount();
   const newOrder = new Order({
@@ -75,7 +74,7 @@ const getClientOrders = async (req, res) => {
 // Solo permite editar el status de la orden.
 const editOrder = async (req, res) => {
   const { id } = req.params;
-  const { status, items } = req.body;
+  const { status, items, enabled } = req.body;
   Order.findOne({ _id: id }, (err, ord) => {
     if (err) {
       console.error(err);
@@ -84,6 +83,7 @@ const editOrder = async (req, res) => {
     ord.items = items;
     ord.status = status;
     ord.ts_update = Date.now();
+    ord.enabled = enabled;
     ord.save((err, prod) => {
       if (err) {
         console.error(err);
