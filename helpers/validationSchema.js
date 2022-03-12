@@ -41,7 +41,7 @@ const productValidationSchema = Joi.object({
     .required(),
   stock: Joi.number().integer().min(0).required(), // uno de los campos
   enabled: Joi.bool(),
-  current_time: Joi.date(),
+  current_time: Joi.string(),
 });
 
 const orderValidationSchema = Joi.object({
@@ -59,6 +59,7 @@ const orderValidationSchema = Joi.object({
     )
     .required(),
   enabled: Joi.boolean().required(),
+  current_time: Joi.string(),
 });
 
 module.exports = {

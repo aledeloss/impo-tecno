@@ -31,12 +31,12 @@ const OrderSchema = Schema({
     default: true,
   },
   ts_create: {
-    type: Date,
-    default: Date.now,
+    type: String,
+    required: true,
   },
   ts_update: {
-    type: Date,
-    default: Date.now,
+    type: String,
+    required: true,
   },
 });
 
