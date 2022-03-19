@@ -20,12 +20,12 @@ const UserSchema = Schema(
       type: String,
       default: 'user',
     },
-    enable: {
+    enabled: {
       type: Boolean,
       default: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = model('users', UserSchema);

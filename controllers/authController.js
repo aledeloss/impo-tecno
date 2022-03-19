@@ -46,6 +46,36 @@ const createUser = async (req, res) => {
   }
 };
 
+const editUser = async (req, res) => {
+  const { id } = req.params;
+  const {
+    email, password, companyName, role, current_time,
+  } = req.body;
+  let enabled = true;
+  if (req.body.enabled === false) {
+    enabled = false;
+  }
+  User.findOne({ _id: id }, (err, user) => {
+    if (err) {
+      console.error(err);
+      return res('Error al buscar el usuario', null);
+    }
+    user.email = email;
+    user.password = hash(password);
+    user.companyName = companyName;
+    user.role = role;
+    user.ts_update = current_time;
+    user.enabled = enabled;
+    user.id = id;
+    user.save((err, user) => {
+      if (err) {
+        console.error(err);
+      }
+      res.json({ message: 'Se guardó el usuario editado', user });
+    });
+  });
+};
+
 const getAllUsers = async (_, res) => {
   try {
     const data = await User.find();
@@ -55,4 +85,6 @@ const getAllUsers = async (_, res) => {
   }
 };
 
-module.exports = { createUser, auth, getAllUsers };
+module.exports = {
+  createUser, auth, getAllUsers, editUser,
+};
