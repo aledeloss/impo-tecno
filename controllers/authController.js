@@ -76,6 +76,17 @@ const editUser = async (req, res) => {
   });
 };
 
+const getSingleUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await User.findById(id);
+    res.json(data);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+};
+
 const getAllUsers = async (_, res) => {
   try {
     const data = await User.find();
@@ -86,5 +97,5 @@ const getAllUsers = async (_, res) => {
 };
 
 module.exports = {
-  createUser, auth, getAllUsers, editUser,
+  createUser, auth, getAllUsers, editUser, getSingleUser,
 };
