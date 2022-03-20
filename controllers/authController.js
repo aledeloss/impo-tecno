@@ -61,7 +61,7 @@ const editUser = async (req, res) => {
       return res('Error al buscar el usuario', null);
     }
     user.email = email;
-    user.password = hash(password);
+    user.password = req.body.new_password ? hash(req.body.new_password) : password;
     user.companyName = companyName;
     user.role = role;
     user.ts_update = current_time;
