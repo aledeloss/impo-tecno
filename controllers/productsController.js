@@ -64,7 +64,7 @@ const editProduct = async (req, res) => {
   Product.findOne({ _id: id }, (err, prod) => {
     if (err) {
       console.error(err);
-      return res('Device update failed', null);
+      return res('Error al buscar el producto', null);
     }
     prod.category = category;
     prod.trademark = trademark;
@@ -85,7 +85,6 @@ const editProduct = async (req, res) => {
   });
 };
 
-const updateStatus = async (id) => {};
 
 module.exports = {
   getAllProducts,

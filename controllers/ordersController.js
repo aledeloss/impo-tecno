@@ -104,7 +104,7 @@ const cancelOrder = async (req, res) => {
   Order.findOne({ _id: id }, (err, ord) => {
     if (err) {
       console.error(err);
-      return res('Device update failed', null);
+      return res('Error al buscar la orden', null);
     }
     ord.client_id = req.id;
     ord.items = items;
