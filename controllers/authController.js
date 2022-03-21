@@ -39,7 +39,6 @@ const createUser = async (req, res) => {
     user.password = hash(password);
     await user.save();
     res.sendStatus(201);
-    console.log('newUser', user);
   } catch (err) {
     console.error(err);
     res.status(500).json(err.message);
