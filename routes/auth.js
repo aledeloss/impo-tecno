@@ -6,10 +6,10 @@ const {
 } = require('../controllers/authController');
 const { secureAdmin } = require('../middlewares/auth');
 
+router.get('/all', secureAdmin, getAllUsers);
 router.post('/create', secureAdmin, createUser);
 router.get('/:id/', secureAdmin, getSingleUser);
 router.put('/:id/edit', secureAdmin, editUser);
 router.post('/login', auth);
-router.get('/all', secureAdmin, getAllUsers);
 
 module.exports = router;
