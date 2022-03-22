@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 const sendEmail = async (
   to,
   html,
-  subject = 'Recibimos la orden de compra a TecnoBox'
+  subject = 'Recibimos la orden de compra a TecnoBox',
 ) => {
   try {
     const transporter = nodemailer.createTransport({
@@ -22,7 +22,7 @@ const sendEmail = async (
     const info = await transporter.sendMail({
       from: '"TecnoBox" <no-replay@tecnobox.com>',
       to,
-      bbc: process.env.ADMIN_EMAIL,
+      bcc: process.env.ADMIN_EMAIL,
       subject,
       html,
       attachments: [
