@@ -1,7 +1,7 @@
 const { handlebars } = require('hbs');
 
 const newOrderEmailTemplate = (newOrder) => {
-  const tableBodyStructure = '{{#each items}}<tr style="padding: 3px; background-color: #fff"><td style="padding: 3px;">{{trademark}}</td><td style="padding: 3px;">{{name}}</td><td style="padding: 3px;">{{quantity}}</td><td style="padding: 3px;">$ {{price}}</td><tr>{{/each}}';
+  const tableBodyStructure = '{{#each items}}<tr style="padding: 3px; background-color: #fff"><td style="padding: 3px;">{{trademark}}</td><td style="padding: 3px;">{{name}}</td><td style="padding: 3px;">{{quantity}}</td><td style="padding: 3px;">$ {{ totalItem }}</td><tr>{{/each}}';
   const TbodyTemplate = handlebars.compile(tableBodyStructure);
   const TBodyRender = TbodyTemplate(newOrder);
 
@@ -31,8 +31,8 @@ const newOrderEmailTemplate = (newOrder) => {
                 <tr style="padding: 3px; background-color: #CCEAFF;">
                   <th style="padding: 3px;" width="200px" align="left">Marca</th>
                   <th style="padding: 3px;" width="300px" align="left">Modelo</th>
-                  <th style="padding: 3px;" width="100px" align="left">Precio</th>
                   <th style="padding: 3px;" width="100px" align="left">Cantidad</th>
+                  <th style="padding: 3px;" width="100px" align="left">Precio</th>
                 </tr>
               <thead>
                 <tbody style="border-radius: 5px">
